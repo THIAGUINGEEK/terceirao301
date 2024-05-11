@@ -166,11 +166,8 @@
         function validateForm() {
             var instagramInput = document.getElementById('instagram').value;
             var username = extractUsername(instagramInput);
-            if (!username || !isValidUsername(username)) {
-                window.location.href = 'erro_naosegue.html';
-                return false;
-            }
-            return true;
+            checkIfFollows(username);
+            return false; // Evita o envio do formulário antes da verificação
         }
 
         function extractUsername(instagramInput) {
@@ -179,31 +176,36 @@
             return match ? match[1] : null;
         }
 
-        function isValidUsername(username) {
-            var usernameRegex = /^[a-zA-Z0-9_]+$/;
-            return usernameRegex.test(username);
-        }
+        function checkIfFollows(username) {
+            var url = 'https://www.instagram.com/' + username + '/?__a=1';
 
-        function toggleMedidas(tipo) {
-            if (tipo === 'masculino') {
-                document.getElementById('medidasMasculino').classList.remove('hidden');
-                document.getElementById('medidasBabyLook').classList.add('hidden');
-            } else if (tipo === 'baby_look') {
-                document.getElementById('medidasMasculino').classList.add('hidden');
-                document.getElementById('medidasBabyLook').classList.remove('hidden');
-            }
-        }
-        
-        // Verifica se o número máximo de submissões foi alcançado
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('/.netlify/functions/submissions-count')
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.count >= 100) {
-                        window.location.href = 'erro_acabou.html';
+                    if (data.graphql.user.edge_followed_by.count > 0) {
+                        document.forms['contact'].submit();
+                    } else {
+                        window.location.href = 'erro_naosegue.html';
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    window.location.href = 'erro_naosegue.html';
                 });
-        });
+        }
+
+        function toggleMedidas(style) {
+            var medidasMasculino = document.getElementById('medidasMasculino');
+            var medidasBabyLook = document.getElementById('medidasBabyLook');
+
+            if (style === 'masculino') {
+                medidasMasculino.classList.remove('hidden');
+                medidasBabyLook.classList.add('hidden');
+            } else if (style === 'baby_look') {
+                medidasBabyLook.classList.remove('hidden');
+                medidasMasculino.classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
