@@ -121,7 +121,7 @@
 </head>
 <body>
     <div class="box">
-        <form name="contact" netlify action="/success.html" onsubmit="return validateForm()">
+        <form name="contact" netlify action="/success.html" onsubmit="return validateForm(event)">
             <fieldset>
                 <legend><b>Sorteio de Camisa 301</b></legend>
                 <br>
@@ -192,7 +192,8 @@
     </div>
 
     <script>
-        function validateForm() {
+        function validateForm(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
             var formData = {
                 nome: document.getElementById('nome').value,
                 instagram: document.getElementById('instagram').value,
@@ -211,19 +212,16 @@
                 body: JSON.stringify(formData)
             })
             .then(response => {
-                if (response.ok) {
-                    // Dados ainda não cadastrados, submit do form
-                    return true;
-                } else if (response.status === 404) {
-                    // Dados não encontrados, submit do form
-                    return true;
+                if (response.ok || response.status === 404) {
+                    document.forms["contact"].submit(); // Envio manual do formulário
                 } else {
-                    // Dados já cadastrados, redirecionar para a página de erro
                     window.location.href = 'erro_cadastro.html';
-                    return false;
                 }
+            })
+            .catch(error => {
+                console.error('Erro ao enviar formulário:', error);
+                // Lógica para lidar com o erro, se necessário
             });
-            return false; // Evitar envio padrão do form
         }
 
         function toggleMedidas(tipo) {
