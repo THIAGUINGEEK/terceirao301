@@ -177,6 +177,17 @@
             }
             return true;
         }
+        
+        // Verifica se o número máximo de submissões foi alcançado
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/.netlify/functions/submissions-count')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count >= 100) {
+                        window.location.href = 'erro_acabou.html';
+                    }
+                });
+        });
     </script>
 </body>
 </html>
