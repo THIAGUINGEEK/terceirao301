@@ -6,40 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorteio Camisa 301</title>
     <style>
-        body{
+        body {
             font-family: Arial, Helvetica, sans-serif;
             background-image: linear-gradient(to right, rgb(79, 79, 79), rgb(79, 79, 79));
-            margin: 0; /* Removido a margem padrão do body */
-            padding: 0; /* Removido o padding padrão do body */
-            overflow-x: hidden; /* Evita a rolagem horizontal em dispositivos móveis */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
-        .box{
+        .box {
             color: white;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
-            background-color: brown; /* Alterada para a cor marrom */
+            background-color: brown;
             padding: 15px;
             border-radius: 15px;
-            width: 80%; /* Alterado para 80% da largura da tela */
-            max-width: 400px; /* Limita a largura máxima a 400px */
+            width: 80%;
+            max-width: 400px;
         }
-        fieldset{
+        fieldset {
             border: 3px solid red;
         }
-        legend{
+        legend {
             border: 1px solid brown;
             padding: 10px;
             text-align: center;
             background-color: linear-gradient(to right,rgb(255, 215, 0), rgb(238, 121, 66));
             border-radius: 8px;
         }
-        .inputBox{
+        .inputBox {
             position: relative;
-            margin-bottom: 15px; /* Adicionado espaçamento entre os campos */
+            margin-bottom: 15px;
         }
-        .inputUser{
+        .inputUser {
             background: none;
             border: none;
             border-bottom: 1px solid white;
@@ -48,25 +48,24 @@
             font-size: 15px;
             width: 100%;
             letter-spacing: 2px;
-            padding: 5px; /* Adicionado espaçamento interno nos campos de entrada */
+            padding: 5px;
         }
-        .labelInput{
+        .labelInput {
             position: absolute;
             top: 0px;
             left: 0px;
             pointer-events: none;
             transition: .5s;
-            font-size: 12px; /* Reduzido o tamanho da fonte para dispositivos menores */
+            font-size: 12px;
         }
-        /* Adicionado estilo para os radio buttons e seus rótulos */
         input[type="radio"] {
             margin-right: 5px;
-            transform: scale(1.2); /* Aumenta o tamanho do radio button para facilitar o toque em dispositivos móveis */
+            transform: scale(1.2);
         }
         label[for="masculino"], label[for="baby_look"] {
-            font-size: 14px; /* Reduzido o tamanho da fonte dos rótulos dos radio buttons */
+            font-size: 14px;
         }
-        #submit{
+        #submit {
             background-image: linear-gradient(to right,rgb(255, 215, 0), rgb(238, 121, 66));
             width: 100%;
             border: none;
@@ -75,21 +74,19 @@
             font-size: 15px;
             cursor: pointer;
             border-radius: 10px;
-            margin-top: 20px; /* Adicionado espaço entre o botão e a seção de tamanho */
+            margin-top: 20px;
         }
-        #submit:hover{
+        #submit:hover {
             background-image: linear-gradient(to right,rgb(139, 136, 120), rgb(139, 62, 47));
         }
         .hidden {
             display: none;
         }
-        /* Adiciona estilos para as imagens */
         img {
             max-width: 100%;
             height: auto;
-            margin-top: 15px; /* Adicionado espaço entre a imagem e a nova seção */
+            margin-top: 15px;
         }
-        /* Estilos para o botão do Instagram */
         .btn-instagram {
             background-color: transparent;
             border: none;
@@ -99,17 +96,16 @@
             width: 30px;
             height: 30px;
         }
-        /* Estilos para o ícone de alerta */
         .alert-icon {
             display: inline-block;
             width: 16px;
             height: 16px;
-            margin-left: 5px; /* Espaçamento entre o ícone e o texto */
+            margin-left: 5px;
             cursor: pointer;
             position: relative;
         }
         .alert-icon::after {
-            content: url('https://www.freeiconspng.com/uploads/alert-exclamation-message-warning-icon-4.png'); /* URL do ícone de alerta */
+            content: url('https://www.freeiconspng.com/uploads/alert-exclamation-message-warning-icon-4.png');
             position: absolute;
             top: 50%;
             left: 50%;
@@ -151,7 +147,6 @@
                     <label for="nome_camisa" class="labelInput">Nome na camisa (até 16 caracteres)</label>
                 </div>
                 <br><br>
-
                 <p>Estilo:</p>
                 <input type="radio" id="masculino" name="estilo" value="masculino" required onchange="toggleMedidas('masculino')">
                 <label for="masculino">Masculino</label>
@@ -193,27 +188,34 @@
 
     <script>
         function validateForm() {
-            var email = document.getElementById('email').value;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/.netlify/functions/check-email?email=' + email, false);
-            xhr.send();
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.exists) {
-                    alert('Este email já foi registrado. Por favor, utilize um email diferente.');
-                    document.getElementById('nome').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('telefone').value = '';
-                    document.getElementById('numero_camisa').value = '';
-                    document.getElementById('nome_camisa').value = '';
-                    document.getElementById('masculino').checked = false;
-                    document.getElementById('baby_look').checked = false;
-                    document.getElementById('medidasMasculino').classList.add('hidden');
-                    document.getElementById('medidasBabyLook').classList.add('hidden');
+            var formData = {
+                nome: document.getElementById('nome').value,
+                instagram: document.getElementById('instagram').value,
+                telefone: document.getElementById('telefone').value,
+                numero_camisa: document.getElementById('numero_camisa').value,
+                nome_camisa: document.getElementById('nome_camisa').value,
+                estilo: document.querySelector('input[name="estilo"]:checked').value
+            };
+
+            fetch('/.netlify/functions/check-submission', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer nfp_ou2nNZ9orLvJhGzaT8SNjbuHgvPFVp150750'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Dados ainda não cadastrados, submit do form
+                    return true;
+                } else {
+                    // Dados já cadastrados, redirecionar para a página de erro
+                    window.location.href = 'erro_cadastro.html';
                     return false;
                 }
-            }
-            return true;
+            });
+            return false; // Evitar envio padrão do form
         }
 
         function toggleMedidas(tipo) {
@@ -225,8 +227,7 @@
                 document.getElementById('medidasBabyLook').classList.remove('hidden');
             }
         }
-        
-        // Verifica se o número máximo de submissões foi alcançado
+
         document.addEventListener('DOMContentLoaded', function () {
             fetch('/.netlify/functions/submissions-count')
                 .then(response => response.json())
