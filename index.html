@@ -164,11 +164,13 @@
 
     <script>
         function validateForm() {
-            var instagramInput = document.getElementById('instagram').value;
-            var username = extractUsername(instagramInput);
-            checkIfFollows(username);
-            return false; // Evita o envio do formulário antes da verificação
-        }
+			var instagram = document.getElementById('instagram').value;
+			if (!instagram.includes('rosario.turma301')) {
+				window.location.href = 'erro_naosegue.html';
+				return false;
+			}
+			return true;
+		}
 
         function extractUsername(instagramInput) {
 			var usernameRegex = /(?:@|https?:\/\/(?:www\.)?instagram\.com\/)?([a-zA-Z0-9_]+)/;
