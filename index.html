@@ -171,28 +171,32 @@
         }
 
         function extractUsername(instagramInput) {
-            var usernameRegex = /(?:@|https?:\/\/(?:www\.)?instagram\.com\/)?([a-zA-Z0-9_]+)/;
-            var match = instagramInput.match(usernameRegex);
-            return match ? match[1] : null;
-        }
+			var usernameRegex = /(?:@|https?:\/\/(?:www\.)?instagram\.com\/)?([a-zA-Z0-9_]+)/;
+			var match = instagramInput.match(usernameRegex);
+			return match ? match[1] : null;
+		}
 
-        function checkIfFollows(username) {
-            var url = 'https://www.instagram.com/' + username + '/?__a=1';
+        function checkIfFollows(instagramInput) {
+			var usernameRegex = /(?:@|https?:\/\/(?:www\.)?instagram\.com\/)?([a-zA-Z0-9_.]+)/;
+			var match = instagramInput.match(usernameRegex);
+			var username = match ? match[1] : null;
+			var url = 'https://www.instagram.com/' + username + '/?__a=1';
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.graphql.user.edge_followed_by.count > 0) {
-                        document.forms['contact'].submit();
-                    } else {
-                        window.location.href = 'erro_naosegue.html';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    window.location.href = 'erro_naosegue.html';
-                });
-        }
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					if (data.graphql.user.edge_followed_by.count > 0) {
+						document.forms['contact'].submit();
+					} else {
+						window.location.href = 'erro_naosegue.html';
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					window.location.href = 'erro_naosegue.html';
+				});
+		}
+
 
         function toggleMedidas(style) {
             var medidasMasculino = document.getElementById('medidasMasculino');
