@@ -53,7 +53,7 @@
 </head>
 <body>
     <h1>Termos para Assinar</h1>
-    <form id="termsForm" action="/sorteio.html" method="post">
+    <form id="termsForm" action="sorteio.html" method="post" onsubmit="return validateForm()">
         <label for="termsCheck">Seu perfil deve seguir o Instagram <a href="https://www.instagram.com/rosario.turma301/" target="_blank">@rosario.turma301</a></label><br>
         <label for="termsCheck2">Você é responsável pela coleta da camisa, caso não seja estudante do Colégio Rosário.</label><br>
         <label for="termsCheck3">É de suma importância que você fique atento às mensagens em seu Instagram ou Whatsapp.</label><br>
@@ -64,5 +64,15 @@
         <a href="https://www.instagram.com/rosario.turma301/" target="_blank"><img src="https://static.vecteezy.com/system/resources/previews/018/930/415/original/instagram-logo-instagram-icon-transparent-free-png.png" alt="Instagram" class="instagram-icon"></a>
         <input type="submit" value="OK">
     </form>
+
+    <script>
+        function validateForm() {
+            if (!document.getElementById('termsCheck').checked) {
+                alert('Você deve concordar com os termos do sorteio.');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
