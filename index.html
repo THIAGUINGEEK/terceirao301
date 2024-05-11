@@ -84,7 +84,7 @@
 </head>
 <body>
     <div class="box">
-        <form name="contact" netlify action="/success.html">
+        <form name="contact" netlify action="/success.html" onsubmit="return validateForm()">
             <fieldset>
                 <legend><b>Sorteio de Camisa 301</b></legend>
                 <br>
@@ -94,7 +94,7 @@
                 </div>
                 <br><br>
                 <div class="inputBox">
-                    <input type="text" name="email" id="email" class="inputUser" required>
+                    <input type="email" name="email" id="email" class="inputUser" required>
                     <label for="email" class="labelInput">Email</label>
                 </div>
                 <br><br>
@@ -154,23 +154,29 @@
     </div>
 
     <script>
-        function mostrarMedidas() {
-            var estilo = document.querySelector('input[name="estilo"]:checked').value;
-
-            if (estilo === "masculino") {
-                document.getElementById("medidasMasculino").classList.remove("hidden");
-                document.getElementById("medidasBabyLook").classList.add("hidden");
-            } else if (estilo === "baby_look") {
-                document.getElementById("medidasBabyLook").classList.remove("hidden");
-                document.getElementById("medidasMasculino").classList.add("hidden");
+        function validateForm() {
+            var email = document.getElementById('email').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/.netlify/functions/check-email?email=' + email, false);
+            xhr.send();
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.exists) {
+                    alert('Este email já foi registrado. Por favor, utilize um email diferente.');
+                    document.getElementById('nome').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('telefone').value = '';
+                    document.getElementById('numero_camisa').value = '';
+                    document.getElementById('nome_camisa').value = '';
+                    document.getElementById('masculino').checked = false;
+                    document.getElementById('baby_look').checked = false;
+                    document.getElementById('medidasMasculino').classList.add('hidden');
+                    document.getElementById('medidasBabyLook').classList.add('hidden');
+                    return false;
+                }
             }
+            return true;
         }
-
-        // Adiciona um event listener para o evento change nos inputs de estilo
-        var inputsEstilo = document.querySelectorAll('input[name="estilo"]');
-        inputsEstilo.forEach(function(input) {
-            input.addEventListener('change', mostrarMedidas);
-        });
     </script>
 </body>
 </html>
