@@ -103,8 +103,8 @@
                 </div>
                 <br><br>
                 <div class="inputBox">
-                    <input type="email" name="email" id="email" class="inputUser" required>
-                    <label for="email" class="labelInput">Email</label>
+                    <input type="text" name="instagram" id="instagram" class="inputUser" required>
+                    <label for="instagram" class="labelInput">Perfil do Instagram (deve estar público)</label>
                 </div>
                 <br><br>
                 <div class="inputBox">
@@ -164,27 +164,24 @@
 
     <script>
         function validateForm() {
-            var email = document.getElementById('email').value;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/.netlify/functions/check-email?email=' + email, false);
-            xhr.send();
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.exists) {
-                    alert('Este email já foi registrado. Por favor, utilize um email diferente.');
-                    document.getElementById('nome').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('telefone').value = '';
-                    document.getElementById('numero_camisa').value = '';
-                    document.getElementById('nome_camisa').value = '';
-                    document.getElementById('masculino').checked = false;
-                    document.getElementById('baby_look').checked = false;
-                    document.getElementById('medidasMasculino').classList.add('hidden');
-                    document.getElementById('medidasBabyLook').classList.add('hidden');
-                    return false;
-                }
+            var instagramInput = document.getElementById('instagram').value;
+            var username = extractUsername(instagramInput);
+            if (!username || !isValidUsername(username)) {
+                window.location.href = 'erro_naosegue.html';
+                return false;
             }
             return true;
+        }
+
+        function extractUsername(instagramInput) {
+            var usernameRegex = /(?:@|https?:\/\/(?:www\.)?instagram\.com\/)?([a-zA-Z0-9_]+)/;
+            var match = instagramInput.match(usernameRegex);
+            return match ? match[1] : null;
+        }
+
+        function isValidUsername(username) {
+            var usernameRegex = /^[a-zA-Z0-9_]+$/;
+            return usernameRegex.test(username);
         }
 
         function toggleMedidas(tipo) {
