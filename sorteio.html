@@ -121,7 +121,7 @@
 </head>
 <body>
     <div class="box">
-        <form name="contact" netlify action="/success.html" onsubmit="return validateForm(event)">
+        <form name="contact" netlify action="/success.html" onsubmit="return validateForm()">
             <fieldset>
                 <legend><b>Sorteio de Camisa 301</b></legend>
                 <br>
@@ -192,36 +192,28 @@
     </div>
 
     <script>
-        function validateForm(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
-            var formData = {
-                nome: document.getElementById('nome').value,
-                instagram: document.getElementById('instagram').value,
-                telefone: document.getElementById('telefone').value,
-                numero_camisa: document.getElementById('numero_camisa').value,
-                nome_camisa: document.getElementById('nome_camisa').value,
-                estilo: document.querySelector('input[name="estilo"]:checked').value
-            };
-
-            fetch('/.netlify/functions/check-submission', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer nfp_ou2nNZ9orLvJhGzaT8SNjbuHgvPFVp150750'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok || response.status === 404) {
-                    document.forms["contact"].submit(); // Envio manual do formulário
-                } else {
-                    window.location.href = 'erro_cadastro.html';
+        function validateForm() {
+            var email = document.getElementById('email').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/.netlify/functions/check-email?email=' + email, false);
+            xhr.send();
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.exists) {
+                    alert('Este email já foi registrado. Por favor, utilize um email diferente.');
+                    document.getElementById('nome').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('telefone').value = '';
+                    document.getElementById('numero_camisa').value = '';
+                    document.getElementById('nome_camisa').value = '';
+                    document.getElementById('masculino').checked = false;
+                    document.getElementById('baby_look').checked = false;
+                    document.getElementById('medidasMasculino').classList.add('hidden');
+                    document.getElementById('medidasBabyLook').classList.add('hidden');
+                    return false;
                 }
-            })
-            .catch(error => {
-                console.error('Erro ao enviar formulário:', error);
-                // Lógica para lidar com o erro, se necessário
-            });
+            }
+            return true;
         }
 
         function toggleMedidas(tipo) {
