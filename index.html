@@ -122,7 +122,6 @@
                 <label for="baby_look">Baby Look</label>
                 <br><br>
                 <div id="medidasMasculino" class="hidden">
-                    <img src="https://i.imgur.com/dP0fGsj.jpeg" alt="Medidas Masculinas">
                     <p>Tamanho:</p>
                     <select name="tamanho_masculino">
                         <option value="P">P</option>
@@ -187,7 +186,7 @@
                 document.getElementById('medidasBabyLook').classList.remove('hidden');
             }
         }
-        
+
         // Verifica se o número máximo de submissões foi alcançado
         document.addEventListener('DOMContentLoaded', function () {
             fetch('/.netlify/functions/submissions-count')
@@ -197,6 +196,15 @@
                         window.location.href = 'erro_acabou.html';
                     }
                 });
+        });
+
+        // Atualiza a exibição do estilo e oculta a seção do baby look ao selecionar o estilo masculino
+        document.getElementById('submit').addEventListener('click', function () {
+            var estilo = document.querySelector('input[name="estilo"]:checked').value;
+            var tamanhoMasculino = document.querySelector('select[name="tamanho_masculino"]').value;
+
+            document.getElementById('estilo-selected').innerText = 'Estilo: ' + (estilo === 'masculino' ? 'Masculino' : 'Baby Look') + ' Tamanho: ' + (estilo === 'masculino' ? tamanhoMasculino : '');
+            document.getElementById('medidasBabyLook').classList.add('hidden');
         });
     </script>
 </body>
