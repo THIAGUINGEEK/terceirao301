@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio Camisa 301</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: linear-gradient(to right, rgb(20, 147, 220), rgb(17, 54, 71));
+        }
+        .box{
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background-color: brown; /* Alterada para a cor marrom */
+            padding: 15px;
+            border-radius: 15px;
+            width: 20%;
+        }
+        fieldset{
+            border: 3px solid dodgerblue;
+        }
+        legend{
+            border: 1px solid dodgerblue;
+            padding: 10px;
+            text-align: center;
+            background-color: dodgerblue;
+            border-radius: 8px;
+        }
+        .inputBox{
+            position: relative;
+        }
+        .inputUser{
+            background: none;
+            border: none;
+            border-bottom: 1px solid white;
+            outline: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+            letter-spacing: 2px;
+        }
+        .labelInput{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            pointer-events: none;
+            transition: .5s;
+        }
+        .inputUser:focus ~ .labelInput,
+        .inputUser:valid ~ .labelInput{
+            top: -20px;
+            font-size: 12px;
+            color: dodgerblue;
+        }
+        #submit{
+            background-image: linear-gradient(to right,rgb(0, 92, 197), rgb(90, 20, 220));
+            width: 100%;
+            border: none;
+            padding: 15px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-top: 20px; /* Adicionado espaço entre o botão e a seção de tamanho */
+        }
+        #submit:hover{
+            background-image: linear-gradient(to right,rgb(0, 80, 172), rgb(80, 19, 195));
+        }
+        .hidden {
+            display: none;
+        }
+        /* Adiciona estilos para as imagens */
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 15px; /* Adicionado espaço entre a imagem e a nova seção */
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <form action="">
+            <fieldset>
+                <legend><b>Sorteio de Camisa 301</b></legend>
+                <br>
+                <div class="inputBox">
+                    <input type="text" name="nome" id="nome" class="inputUser" required>
+                    <label for="nome" class="labelInput">Nome completo</label>
+                </div>
+                <br><br>
+                <div class="inputBox">
+                    <input type="text" name="email" id="email" class="inputUser" required>
+                    <label for="email" class="labelInput">Email</label>
+                </div>
+                <br><br>
+                <div class="inputBox">
+                    <input type="tel" name="telefone" id="telefone" class="inputUser" required>
+                    <label for="telefone" class="labelInput">Telefone</label>
+                </div>
+				<br><br>
+				<div class="inputBox">
+					<input type="number" name="numero_camisa" id="numero_camisa" class="inputUser" required step="1">
+					<label for="numero_camisa" class="labelInput">Número na camisa</label>
+				</div>
+				<br><br>
+				<div class="inputBox">
+					<input type="text" name="nome_camisa" id="nome_camisa" class="inputUser" maxlength="16" required>
+					<label for="nome_camisa" class="labelInput">Nome na camisa (até 16 caracteres)</label>
+				</div>
+				<br><br>
+
+                <p>Estilo:</p>
+                <input type="radio" id="masculino" name="estilo" value="masculino" required>
+                <label for="masculino">Masculino</label>
+                <br>
+                <input type="radio" id="baby_look" name="estilo" value="baby_look" required>
+                <label for="baby_look">Baby Look</label>
+                <br><br>
+                <div id="medidasMasculino" class="hidden">
+                    <img src="https://i.imgur.com/dP0fGsj.jpeg" alt="Medidas Masculinas">
+                    <p>Tamanho:</p>
+                    <select name="tamanho_masculino">
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="G1">G1</option>
+                        <option value="G2">G2</option>
+                        <option value="G3">G3</option>
+                    </select>
+                </div>
+                <div id="medidasBabyLook" class="hidden">
+                    <img src="https://i.imgur.com/0LPPl9r.jpeg" alt="Medidas Baby Look">
+                    <p>Tamanho:</p>
+                    <select name="tamanho_babylook">
+                        <option value="PP">PP</option>
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="G1">G1</option>
+                        <option value="G2">G2</option>
+                        <option value="G3">G3</option>
+                    </select>
+                </div>
+                <input type="submit" name="submit" id="submit">
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+        function mostrarMedidas() {
+            var estilo = document.querySelector('input[name="estilo"]:checked').value;
+
+            if (estilo === "masculino") {
+                document.getElementById("medidasMasculino").classList.remove("hidden");
+                document.getElementById("medidasBabyLook").classList.add("hidden");
+            } else if (estilo === "baby_look") {
+                document.getElementById("medidasBabyLook").classList.remove("hidden");
+                document.getElementById("medidasMasculino").classList.add("hidden");
+            }
+        }
+
+        // Adiciona um event listener para o evento change nos inputs de estilo
+        var inputsEstilo = document.querySelectorAll('input[name="estilo"]');
+        inputsEstilo.forEach(function(input) {
+            input.addEventListener('change', mostrarMedidas);
+        });
+    </script>
+</body>
+</html>
