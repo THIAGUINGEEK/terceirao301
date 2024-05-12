@@ -66,7 +66,17 @@
     </form>
 
     <script>
-
+	function validateForm() {
+		if (!document.getElementById('termsCheck').checked) {
+			alert('Você deve concordar com os termos do sorteio.');
+			return false;
+		} else {
+			const termsAccepted = localStorage.getItem('termsAccepted');
+			if (termsAccepted !== 'true') {
+				alert('Você deve aceitar os termos do sorteio.');
+				return false;
+			}
+		}
 
 		const dataLimite = new Date('2024-05-23T14:00:00Z').getTime();
 		const dataSorteio = new Date('2024-05-28T00:00:00Z').getTime();
@@ -77,6 +87,7 @@
 			return false;
 		} else if (agora > dataSorteio) {
 			alert('O sorteio já acabou. Você não pode mais participar.');
+			window.location.href = 'index.html'; // Redireciona para a página index.html
 			return false;
 		}
 
