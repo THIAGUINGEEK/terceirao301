@@ -231,12 +231,12 @@
 		if (localStorage.getItem('termsAccepted') !== 'true') {
 			// Se não foram, exibe mensagem de erro e redireciona para termos.html
 			alert('Você precisa aceitar os termos para acessar esta página.');
-			window.location.href = 'termos.html';
+			window.location.href = 'index.html';
 		} else {
 			// Limpa a variável 'termsAccepted' após 2 segundos
 			setTimeout(function() {
 				localStorage.removeItem('termsAccepted');
-			}, 2000);
+			}, 1000);
 		}
 
         function toggleMedidas(tipo) {
