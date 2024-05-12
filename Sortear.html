@@ -41,19 +41,6 @@
     }
 
     #popup {
-        background-color: rgba(0, 0, 0, 0.5);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-    }
-
-    #popupBox {
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
@@ -61,6 +48,7 @@
         text-align: center;
         display: none;
         max-width: 400px;
+        margin: 0 auto;
     }
 
     #confirmarBtn {
@@ -125,47 +113,46 @@
 </style>
 </head>
 <body>
-    <div id="popup">
-        <div id="popupBox">
-            <h2>sorteio - camisa terceirão 301</h2>
-            <p>powered by (73a1f8b9-246d-4b22-a6c8-ec8aa8919137 @thiago-rodrigues.com)</p>
-            <input type="text" id="nomeUsuario">
-            <button id="confirmarNome">Confirmar</button>
+    <div id="login" style="display:block;">
+        <h1>admin panel - terceirao301.club [#S001]</h1>
+        <form id="loginForm">
+            <label for="username">powered by (73a1f8b9-246d-4b22-a6c8-ec8aa8919137 @thiago-rodrigues.com):</label>
+            <input type="text" id="username" name="username">
+            <button type="submit">submit</button>
+        </form>
+    </div>
+
+    <div id="content" style="display:none;">
+        <h1>Sorteio</h1>
+        <div>
+            <label for="fileInput" id="uploadBtn">Escolher Arquivo</label>
+            <input type="file" id="fileInput">
+            <button id="sortearBtn">Sortear</button>
         </div>
-    </div>
 
-    <h1>Sorteio</h1>
-    <div>
-        <label for="fileInput" id="uploadBtn">Escolher Arquivo</label>
-        <input type="file" id="fileInput">
-        <button id="sortearBtn">Sortear</button>
-    </div>
+        <div id="popup">
+            <p>Tem certeza que deseja sortear?</p>
+            <button id="confirmarBtn">Sim</button>
+        </div>
 
-    <div id="resultado"></div>
-    <div id="countdown"></div>
+        <div id="resultado"></div>
+        <div id="countdown"></div>
+    </div>
 
     <script>
-        let timer;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('popup');
-            const popupBox = document.getElementById('popupBox');
-            const confirmarNomeBtn = document.getElementById('confirmarNome');
-
-            overlay.style.display = 'flex';
-            popupBox.style.display = 'block';
-
-            confirmarNomeBtn.addEventListener('click', function() {
-                const nomeUsuario = document.getElementById('nomeUsuario').value;
-                if (nomeUsuario.trim() !== 'admin') {
-                    alert('sem permissão para acesso.');
-					window.location.href = 'index.html';
-                } else {
-					overlay.style.display = 'none'; // Oculta o overlay
-					popupBox.style.display = 'none'; // Oculta o popup
-                }
-            });
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            if (username === 'admin') {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                alert('sem permissão para tal ação');
+				window.location.href = 'index.html'; // Redireciona para a página de sorteio
+            }
         });
+
+        let timer;
 
         document.getElementById('sortearBtn').addEventListener('click', function() {
             document.getElementById('popup').style.display = 'block';
