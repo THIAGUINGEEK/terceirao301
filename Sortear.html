@@ -185,19 +185,19 @@
             document.getElementById('fileInput').click();
         });
 		
-		// Gerar um ID aleatório
-		function generateRandomId() {
-			return Math.random().toString(36).substr(2, 9);
-		}
-
-		// Substituir o URL na barra de endereço
-		function hideUrl() {
+				// Adicionar um identificador único ao URL
+		function addFragmentIdentifier() {
 			const randomId = generateRandomId();
 			window.history.replaceState({}, document.title, `#${randomId}`);
 		}
 
-		// Chamar a função para ocultar o URL quando a página carregar
-		window.addEventListener('load', hideUrl);
+		// Chamar a função para adicionar o identificador quando a página carregar
+		window.addEventListener('load', addFragmentIdentifier);
+
+		// Função para gerar um ID aleatório
+		function generateRandomId() {
+			return Math.random().toString(36).substr(2, 9);
+		}
 
 		function startCountdown(nome, instagram, numero_camisa, estilo_camisa_upper) {
 			let count = 5;
