@@ -71,6 +71,18 @@
         <h1>Você agora está participando do sorteio da camisa 301.</h1>
         <button onclick="window.location.href='http://www.terceirao301.club'">Voltar ao Site</button>
     </div>
+	
+	
+	<script>
+        // Verifica se a última página visitada foi a Sortear.html
+        var lastVisitedPage = localStorage.getItem('lastVisitedPage');
+        if (!lastVisitedPage || lastVisitedPage.substr(-11) !== 'Sortear.html') {
+            // Se não foi, redireciona para index.html
+            alert('Sem formulário enviado.');
+            window.location.href = 'index.html';
+        }
+    </script>
+	
 </body>
 
 </html>

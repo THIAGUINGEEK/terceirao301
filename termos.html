@@ -70,10 +70,14 @@
             if (!document.getElementById('termsCheck').checked) {
                 alert('Você deve concordar com os termos do sorteio.');
                 return false;
-            }
+            } else {
+				localStorage.setItem('termsAccepted', 'true');
+			}
             window.location.href = 'sorteio.html';
             return false; // Cancela o envio do formulário
         }
+		
+	
     </script>
 </body>
 </html>

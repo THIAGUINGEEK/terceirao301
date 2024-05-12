@@ -128,6 +128,8 @@
             <label for="fileInput" id="uploadBtn">Escolher Arquivo</label>
             <input type="file" id="fileInput">
             <button id="sortearBtn">Sortear</button>
+			<button id="removerWinner" style="margin-right: 10px;">Remover Vencedor</button>
+			<button id="voltarBtn">Voltar para a Página Inicial</button>
         </div>
 
         <div id="popup">
@@ -151,12 +153,54 @@
                 window.location.href = 'index.html'; // Redireciona para a página de sorteio
             }
         });
+		
+		document.getElementById('removerWinner').addEventListener('click', function() {
+			const winner = localStorage.getItem('winner');
+			if (winner) {
+				localStorage.removeItem('winner');
+				alert('Vencedor removido com sucesso!');
+			} else {
+				alert('O vencedor ainda não foi sorteado.');
+			}
+		});
+		
+		document.getElementById('voltarBtn').addEventListener('click', function() {
+			localStorage.removeItem('userLoggedIn');
+			localStorage.removeItem('lastVisitedPage');
+			window.location.href = 'index.html';
+		});
 
         let timer;
 
         document.getElementById('sortearBtn').addEventListener('click', function() {
             document.getElementById('popup').style.display = 'block';
         });
+		
+		// Verifica se o usuário está logado
+		if (!localStorage.getItem('userLoggedIn')) {
+			// Se não estiver, exibe mensagem de erro e redireciona para index.html
+			alert('Você não está logado. Faça login para acessar esta página.');
+			window.location.href = 'index.html';
+
+			// Limpa a variável 'userLoggedIn' após 1 segundo
+			setTimeout(function() {
+				localStorage.removeItem('userLoggedIn');
+			}, 1000);
+		}
+
+		// Verifica se o último URL visitado foi index.html
+		var lastVisitedPage = localStorage.getItem('lastVisitedPage');
+		if (!lastVisitedPage || lastVisitedPage.substr(-10) !== 'index.html') {
+			// Se não foi, exibe mensagem de erro e redireciona para index.html
+			alert('Erro de permissão.');
+			window.location.href = 'index.html';
+		}
+
+		// Limpa a variável 'userLoggedIn' ao fechar a página
+		window.addEventListener('beforeunload', function() {
+			localStorage.removeItem('userLoggedIn');
+		});
+
 
         document.getElementById('confirmarBtn').addEventListener('click', function() {
             const fileInput = document.getElementById('fileInput');
@@ -212,6 +256,7 @@
 					document.getElementById('countdown').style.display = 'none';
 					document.getElementById('resultado').innerHTML = `<p>Parabéns, ${nome} (${instagram})! </p><p>Você ganhou a camisa da 301. Você agora vai vestir o número ${numero_camisa}. Estilo ${estilo_camisa_upper}.</p>`;
 					document.getElementById('resultado').style.display = 'block';
+					localStorage.setItem('winner', JSON.stringify({ nome, instagram, numero_camisa, estilo_camisa_upper }));
 					setTimeout(() => {
 						document.getElementById('resultado').style.opacity = '0';
 						setTimeout(() => {
