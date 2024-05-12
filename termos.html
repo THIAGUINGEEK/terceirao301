@@ -79,10 +79,14 @@
 		}
 
 		const dataLimite = new Date('2024-05-23T14:00:00Z').getTime();
+		const dataSorteio = new Date('2024-05-28T00:00:00Z').getTime();
 		const agora = Date.now();
 
 		if (agora < dataLimite) {
 			alert('O sorteio ainda não começou. Por favor, aguarde até que o cronômetro chegue a zero.');
+			return false;
+		} else if (agora > dataSorteio) {
+			alert('O sorteio já acabou. Você não pode mais participar.');
 			return false;
 		}
 
