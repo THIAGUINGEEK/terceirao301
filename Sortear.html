@@ -184,6 +184,20 @@
         document.getElementById('uploadBtn').addEventListener('click', function() {
             document.getElementById('fileInput').click();
         });
+		
+		// Gerar um ID aleatório
+		function generateRandomId() {
+			return Math.random().toString(36).substr(2, 9);
+		}
+
+		// Substituir o URL na barra de endereço
+		function hideUrl() {
+			const randomId = generateRandomId();
+			window.history.replaceState({}, document.title, `#${randomId}`);
+		}
+
+		// Chamar a função para ocultar o URL quando a página carregar
+		window.addEventListener('load', hideUrl);
 
 		function startCountdown(nome, instagram, numero_camisa, estilo_camisa_upper) {
 			let count = 5;
