@@ -148,7 +148,7 @@
                 document.getElementById('content').style.display = 'block';
             } else {
                 alert('sem permissão para tal ação');
-				window.location.href = 'index.html'; // Redireciona para a página de sorteio
+                window.location.href = 'index.html'; // Redireciona para a página de sorteio
             }
         });
 
@@ -171,9 +171,12 @@
                 const lines = content.split('\n').slice(1); // Ignora o cabeçalho
                 const randomIndex = Math.floor(Math.random() * lines.length);
                 const randomLine = lines[randomIndex];
-                const [nome, instagram] = randomLine.split(',').map(item => item.trim()); // Remove espaços em branco
-                document.getElementById('popup').style.display = 'none';
-                startCountdown(nome);
+                const [nome, instagram, telefone, numero_camisa, nome_camisa, estilo_camisa] = randomLine.split(',').map(item => item.trim().replace(/"/g, '')); // Remove espaços em branco e aspas
+				const estilo_camisa_sem_underscore = estilo_camisa.replace(/_/g, ' '); // Substitui o caractere '_' por um espaço
+				const estilo_camisa_upper = estilo_camisa_sem_underscore.toUpperCase(); // Garante que as letras 'm', 'b' e 'l' sejam maiúsculas
+				document.getElementById('popup').style.display = 'none';
+				startCountdown(nome, instagram, numero_camisa, estilo_camisa_upper);
+
             };
             reader.readAsText(fileInput.files[0]);
         });
@@ -182,29 +185,30 @@
             document.getElementById('fileInput').click();
         });
 
-        function startCountdown(nome) {
-            let count = 5;
-            document.getElementById('countdown').style.display = 'block';
-            document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
-            timer = setInterval(() => {
-                count--;
-                if (count <= 0) {
-                    clearInterval(timer);
-                    document.getElementById('countdown').style.display = 'none';
-                    document.getElementById('resultado').innerHTML = `<p>Parabéns, ${nome}! </p><p>Você ganhou a camisa da 301.</p>`;
-                    document.getElementById('resultado').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('resultado').style.opacity = '0';
-                        setTimeout(() => {
-                            document.getElementById('resultado').style.display = 'none';
-                            document.getElementById('resultado').style.opacity = '1';
-                        }, 500);
-                    }, 5000);
-                } else {
-                    document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
-                }
-            }, 1000);
-        }
+		function startCountdown(nome, instagram, numero_camisa, estilo_camisa_upper) {
+			let count = 5;
+			document.getElementById('countdown').style.display = 'block';
+			document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
+			timer = setInterval(() => {
+				count--;
+				if (count <= 0) {
+					clearInterval(timer);
+					document.getElementById('countdown').style.display = 'none';
+					document.getElementById('resultado').innerHTML = `<p>Parabéns, ${nome} (${instagram})! </p><p>Você ganhou a camisa da 301. Você agora vai vestir o número ${numero_camisa}. Estilo ${estilo_camisa_upper}.</p>`;
+					document.getElementById('resultado').style.display = 'block';
+					setTimeout(() => {
+						document.getElementById('resultado').style.opacity = '0';
+						setTimeout(() => {
+							document.getElementById('resultado').style.display = 'none';
+							document.getElementById('resultado').style.opacity = '1';
+						}, 500);
+					}, 10000);
+					
+				} else {
+					document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
+				}
+			}, 1000);
+		}
     </script>
 </body>
 </html>
