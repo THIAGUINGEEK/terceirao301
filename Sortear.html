@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteio</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    #sortearBtn, #uploadBtn {
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    #sortearBtn:hover, #uploadBtn:hover {
+        background-color: #c82333;
+    }
+
+    #popup {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: none;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    #confirmarBtn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    #confirmarBtn:hover {
+        background-color: #218838;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    label {
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        display: inline-block;
+    }
+
+    label:hover {
+        background-color: #0056b3;
+    }
+
+    #resultado {
+        display: none;
+        background-color: #28a745;
+        color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: center;
+        transition: opacity 0.5s;
+    }
+
+    #countdown {
+        font-size: 24px;
+        color: #007bff;
+        margin-top: 20px;
+    }
+
+    @keyframes countdown {
+        0% { color: #007bff; }
+        50% { color: #0056b3; }
+        100% { color: #007bff; }
+    }
+</style>
+</head>
+<body>
+    <h1>Sorteio</h1>
+    <div>
+        <label for="fileInput" id="uploadBtn">Escolher Arquivo</label>
+        <input type="file" id="fileInput">
+        <button id="sortearBtn">Sortear</button>
+    </div>
+
+    <div id="popup">
+        <p>Tem certeza que deseja sortear?</p>
+        <button id="confirmarBtn">Sim</button>
+    </div>
+
+    <div id="resultado"></div>
+    <div id="countdown"></div>
+
+    <script>
+        let timer;
+
+        document.getElementById('sortearBtn').addEventListener('click', function() {
+            document.getElementById('popup').style.display = 'block';
+        });
+
+        document.getElementById('confirmarBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Por favor, escolha um arquivo CSV antes de sortear.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const lines = content.split('\n').slice(1); // Ignora o cabeçalho
+                const randomIndex = Math.floor(Math.random() * lines.length);
+                const randomLine = lines[randomIndex];
+                const [nome, instagram] = randomLine.split(',').map(item => item.trim()); // Remove espaços em branco
+                document.getElementById('popup').style.display = 'none';
+                startCountdown(nome);
+            };
+            reader.readAsText(fileInput.files[0]);
+        });
+
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        function startCountdown(nome) {
+            let count = 5;
+            document.getElementById('countdown').style.display = 'block';
+            document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
+            timer = setInterval(() => {
+                count--;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('countdown').style.display = 'none';
+                    document.getElementById('resultado').innerHTML = `<p>Parabéns, ${nome}! </p><p>Você ganhou a camisa da 301.</p>`;
+                    document.getElementById('resultado').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('resultado').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('resultado').style.display = 'none';
+                            document.getElementById('resultado').style.opacity = '1';
+                        }, 500);
+                    }, 5000);
+                } else {
+                    document.getElementById('countdown').innerHTML = `Resultado em <span>${count}</span> segundos`;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

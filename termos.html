@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termos para Assinar</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f2f2f2;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        color: #c0392b;
+    }
+    form {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    input[type="submit"] {
+        background-color: #c0392b;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #a93226;
+    }
+    .instagram-icon {
+        width: 20px;
+        vertical-align: middle;
+    }
+</style>
+</head>
+<body>
+    <h1>Termos para Assinar</h1>
+    <form id="termsForm" method="post" onsubmit="return validateForm()">
+        <label for="termsCheck">Seu perfil deve seguir o Instagram <a href="https://www.instagram.com/rosario.turma301/" target="_blank">@rosario.turma301</a></label><br>
+        <label for="termsCheck2">Você é responsável pela coleta da camisa, caso não seja estudante do Colégio Rosário.</label><br>
+        <label for="termsCheck3">É de suma importância que você fique atento às mensagens em seu Instagram ou Whatsapp.</label><br>
+        <label for="termsCheck4">Você não deve enviar o formulário de sorteio mais de uma vez, caso faça, será desclassificado.</label><br>
+        <label for="termsCheck5">Quaisquer erros de digitação relacionados ao nome na camisa, número na camisa, estilo ou tamanho são de responsabilidade sua, sem possibilidade de alteração ou reenvio.</label><br>
+        <label for="termsCheck6">É proibido qualquer uso de engenharia reversa contra o sistema de sorteios, resultando no banimento permanente do usuário.</label><br>
+        <input type="checkbox" id="termsCheck" required> Concordo com os termos do sorteio, sem quaisquer alterações ou recursos adicionais.<br><br>
+        <a href="https://www.instagram.com/rosario.turma301/" target="_blank"><img src="https://static.vecteezy.com/system/resources/previews/018/930/415/original/instagram-logo-instagram-icon-transparent-free-png.png" alt="Instagram" class="instagram-icon"></a>
+        <input type="submit" value="OK">
+    </form>
+
+    <script>
+        function validateForm() {
+            if (!document.getElementById('termsCheck').checked) {
+                alert('Você deve concordar com os termos do sorteio.');
+                return false;
+            }
+            window.location.href = 'sorteio.html';
+            return false; // Cancela o envio do formulário
+        }
+    </script>
+</body>
+</html>
