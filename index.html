@@ -115,23 +115,26 @@
 
     <script>
         const dataLimite = new Date('2024-05-13T14:00:00Z').getTime();
+		const dataSorteio = new Date('2024-05-20T00:00:00Z').getTime();
 
-        const atualizaCronometro = () => {
-            const agora = Date.now();
+		const atualizaCronometro = () => {
+			const agora = Date.now();
 
-            if (agora < dataLimite) {
-                const tempoRestante = dataLimite - agora;
-                const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
-                const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
+			if (agora < dataLimite) {
+				const tempoRestante = dataLimite - agora;
+				const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+				const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
 
-                document.getElementById('cronometro').innerHTML = `${horas}h ${minutos}m ${segundos}s`;
-            } else {
-                document.getElementById('cronometro').style.display = 'none';
-                document.getElementById('aviso').style.display = 'none';
-                document.getElementById('resultado').style.display = 'block';
-            }
-        };
+				document.getElementById('cronometro').innerHTML = `${horas}h ${minutos}m ${segundos}s`;
+			} else if (agora < dataSorteio) {
+				window.location.href = 'sorteio.html'; // Redireciona para a página de sorteio
+			} else {
+				document.getElementById('cronometro').style.display = 'none';
+				document.getElementById('aviso').style.display = 'none';
+				document.getElementById('resultado').style.display = 'block';
+			}
+		};
 
         atualizaCronometro();
 
