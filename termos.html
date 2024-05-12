@@ -66,16 +66,29 @@
     </form>
 
     <script>
-        function validateForm() {
-            if (!document.getElementById('termsCheck').checked) {
-                alert('Você deve concordar com os termos do sorteio.');
-                return false;
-            } else {
-				localStorage.setItem('termsAccepted', 'true');
+	function validateForm() {
+		if (!document.getElementById('termsCheck').checked) {
+			alert('Você deve concordar com os termos do sorteio.');
+			return false;
+		} else {
+			const termsAccepted = localStorage.getItem('termsAccepted');
+			if (termsAccepted !== 'true') {
+				alert('Você deve aceitar os termos do sorteio.');
+				return false;
 			}
-            window.location.href = 'sorteio.html';
-            return false; // Cancela o envio do formulário
-        }
+		}
+
+		const dataLimite = new Date('2024-05-23T14:00:00Z').getTime();
+		const agora = Date.now();
+
+		if (agora < dataLimite) {
+			alert('O sorteio ainda não começou. Por favor, aguarde até que o cronômetro chegue a zero.');
+			return false;
+		}
+
+		window.location.href = 'sorteio.html';
+		return false; // Cancela o envio do formulário
+	}
 		
 	
     </script>
