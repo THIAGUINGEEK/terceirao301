@@ -98,7 +98,7 @@
 <body>
     <div class="container">
         <h1>Sorteio Camisa 301</h1>
-        <div id="aviso">O sorteio da camisa 301 não iniciou ainda e iniciará em 13 de Maio de 2024, às 14:00.</div>
+        <div id="aviso">O sorteio da camisa 301 não iniciou ainda e iniciará em 23 de Maio de 2024, às 14:00.</div>
         <div id="cronometro"></div>
         <p id="resultado" style="display:none;"></p>
         <button id="adminBtn">Admin</button>
@@ -145,11 +145,12 @@
 
 			if (agora < dataLimite) {
 				const tempoRestante = dataLimite - agora;
+				const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
 				const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 				const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
 				const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
 
-				document.getElementById('cronometro').innerHTML = `${horas}h ${minutos}m ${segundos}s`;
+				document.getElementById('cronometro').innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
 			} else if (agora < dataSorteio) {
 			} else {
 				document.getElementById('cronometro').style.display = 'none';
