@@ -47,6 +47,20 @@
         width: 300px;
         margin: 20px auto;
     }
+	
+	#confirmar {
+	  background-color: #3498db; /* Cor de fundo azul */
+	  border: none; /* Sem borda */
+	  color: white; /* Texto branco */
+	  text-align: center; /* Alinhamento do texto */
+	  text-decoration: none; /* Sem decoração de texto */
+	  display: inline-block; /* Exibição em linha */
+	  font-size: 16px; /* Tamanho da fonte */
+	  margin: 4px 2px; /* Margem */
+	  cursor: pointer; /* Cursor de ponteiro ao passar por cima */
+	  border-radius: 8px; /* Borda arredondada */
+	  padding: 10px 24px; /* Preenchimento */
+	}
 
         @media (max-width: 768px) {
             #aviso {
@@ -88,6 +102,60 @@
             font-size: 28px;
             font-weight: bold;
         }
+		
+		#adminBtn {
+		  background-color: #490000; /* Green */
+		  border: none;
+		  color: white;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 16px;
+		  margin: 4px 2px;
+		  cursor: pointer;
+		  opacity: 0.7325;
+		  border-radius: 8px;
+		  padding: 10px 24px;
+		}
+		
+		#anuncio {
+		  position: fixed;
+		  left: 0;
+		  bottom: 0;
+		  width: 100%;
+		  background-color: #f1f1f1;
+		  color: #333;
+		  text-align: center;
+		  padding: 10px;
+		  animation: slide-up 0.5s ease-out forwards;
+		}
+		
+		#voltarBtn {
+		  display: block;
+		  text-align: center;
+		  margin-top: 10px;
+		  text-decoration: none;
+		  background-color: #08665A;
+		  color: white;
+		  padding: 10px 10px;
+		  border-radius: 50%; /* Deixa o botão circular */
+		  width: 50px; /* Define largura e altura para torná-lo um círculo */
+		  height: 50px;
+		  line-height: 50px; /* Centraliza o texto verticalmente */
+		}
+
+		#voltarBtn:hover {
+		  background-color: #2980b9;
+		}
+
+		@keyframes slide-up {
+		  from {
+			transform: translateY(100%);
+		  }
+		  to {
+			transform: translateY(0);
+		  }
+		}
 
         .close:hover,
         .close:focus {
@@ -104,7 +172,10 @@
         <div id="cronometro"></div>
         <p id="resultado" style="display:none;"></p>
         <button id="adminBtn">Admin</button>
+		<a href="http://www.terceirao301.club" id="voltarBtn">Voltar</a>
     </div>
+	
+	
 	
 	
 
@@ -117,6 +188,10 @@
             <button id="confirmar">Confirmar</button>
         </div>
     </div>
+	
+	<div id="anuncio">
+	  <p>Siga-nos no Instagram <a href="https://www.instagram.com/rosario.turma301" target="_blank">@rosario.turma301</a>!</p>
+	</div>
 	
 	
 
@@ -139,6 +214,15 @@
 		document.getElementById('resultado').style.display = 'block';
 		document.getElementById('resultado').innerHTML = 'O sorteio terminou, porém não foi realizado.';
 	}
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	  // Exibe o anúncio
+	  document.getElementById('anuncio').style.display = 'block';
+	  // Define um tempo para o anúncio desaparecer (por exemplo, 5 segundos)
+	  setTimeout(function() {
+		document.getElementById('anuncio').style.display = 'none';
+	  }, 5000); // 5000 milissegundos = 5 segundos
+	});
 	
 
 
