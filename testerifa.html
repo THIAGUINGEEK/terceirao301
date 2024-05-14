@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorteio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #b71c1c;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #contagem {
+            font-size: 36px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-top: 20px;
+        }
+
+        #vencedor {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-top: 20px;
+            display: none; /* Ocultar inicialmente */
+        }
+    </style>
+    <script>
+        function sortearNome() {
+			fetch('contact.csv')
+				.then(response => response.text())
+				.then(text => {
+					const lines = text.split('\n');
+					const randomIndex = Math.floor(Math.random() * lines.length);
+					const randomLine = lines[randomIndex];
+					const data = randomLine.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g); // Modificado aqui
+					const nome = data[0].replace(/"/g, ''); // Remove as aspas do nome
+					const instagram = data[1].replace(/"/g, ''); // Remove as aspas do instagram
+					document.getElementById('vencedor').innerText = `Nome: ${nome}, Instagram: ${instagram}`;
+					document.getElementById('vencedor').style.display = 'block'; // Mostrar o nome do vencedor
+				});
+		}
+
+        function confirmarInicioSorteio() {
+            document.getElementById('popup-confirmacao').style.display = 'block'; // Mostrar o popup de confirmação
+        }
+
+        function iniciarSorteio() {
+            document.getElementById('popup-confirmacao').style.display = 'none'; // Esconder o popup de confirmação
+            let contador = 10;
+            const interval = setInterval(() => {
+                document.getElementById('contagem').innerText = contador;
+                contador--;
+                if (contador < 0) {
+                    clearInterval(interval);
+                    sortearNome();
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <div class="popup" id="popup-confirmacao">
+        <div class="popup-content">
+            <p>Você tem certeza que deseja iniciar o sorteio?</p>
+            <button onclick="iniciarSorteio()">Sim</button>
+            <button onclick="document.getElementById('popup-confirmacao').style.display = 'none'">Não</button>
+        </div>
+    </div>
+    <h1>Sorteio de Nome</h1>
+    <button onclick="confirmarInicioSorteio()">Iniciar Sorteio</button>
+    <p id="contagem">10</p>
+    <p id="vencedor">O vencedor é:</p>
+</body>
+</html>
